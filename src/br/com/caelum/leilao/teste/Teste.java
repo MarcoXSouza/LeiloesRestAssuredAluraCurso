@@ -1,11 +1,12 @@
 package br.com.caelum.leilao.teste;
 
-import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static com.jayway.restassured.RestAssured.given;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.path.xml.XmlPath;
 
@@ -20,6 +21,8 @@ public class Teste {
 	public void setUp(){
 		mauricio = new Usuario(1L, "Mauricio Aniche", "mauricio.aniche@caelum.com.br");
 		guilherme = new Usuario(2L, "Guilherme Silveira", "guilherme.silveira@caelum.com.br");
+		
+//		RestAssured.baseURI = "UrlDoSite";
 		
 	}
 	
@@ -74,6 +77,16 @@ public class Teste {
 		assertEquals("Marcos Xavier", resposta.getNome());
 		assertEquals("marcos@xavier.com", resposta.getEmail());
 		
+//		deletando um usuario
+		given()
+		.contentType("application/xml")
+		.body(resposta)
+		.expect()
+		.statusCode(200)
+		.when()
+		.delete("/usuarios/deleta")
+		.andReturn()
+		.asString();
 		
 	}
 	
